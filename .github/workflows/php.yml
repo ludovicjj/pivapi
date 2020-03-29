@@ -28,6 +28,11 @@ jobs:
       - name: Install dependencies
         run: composer install
 
+      - name: Run Migration
+        run: php bin/console doctrine:schema:update --force --env=test
+        env:
+          DATABASE_URL_TEST: "sqlite:///%kernel.project_dir%/var/test.sqlite"
+
       - name: Test PHPUnit
         run: |
           php bin/phpunit
