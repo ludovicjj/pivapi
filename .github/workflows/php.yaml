@@ -1,0 +1,40 @@
+name: PHP CI
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.3'
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install
+
+      - name: Run migration
+        run: php bin/console doctrine:schema:update --force --env=test
+        env:
+          DATABASE_URL_TEST: "sqlite:///%kernel.project_dir%/var/test.sqlite"
+
+      - name: Test PHPUnit
+        run: |
+          php bin/phpunit
+        env:
+          DATABASE_URL_TEST: "sqlite:///%kernel.project_dir%/var/test.sqlite"
