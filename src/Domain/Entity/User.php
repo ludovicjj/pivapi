@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use Symfony\Component\Security\Core\User\UserInterface;
+use DateTime;
 
 class User implements UserInterface
 {
@@ -24,10 +25,10 @@ class User implements UserInterface
     /** @var string $email */
     private $email;
 
-    /** @var array $roles */
+    /** @var array<int, string> $roles */
     private $roles;
 
-    /** @var \DateTime $createdAt */
+    /** @var DateTime $createdAt */
     private $createdAt;
 
     /** @var null $updatedAt */
@@ -48,13 +49,21 @@ class User implements UserInterface
         $this->lastname = $lastname;
         $this->email = $email;
         $this->roles = [];
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->updatedAt = null;
     }
 
-    public function setRoles(string $role): void
+    /**
+     * @param array<int, string> $role
+     */
+    public function setRoles(array $role): void
     {
         $this->roles = $role;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 
     public function getId(): string
@@ -87,20 +96,15 @@ class User implements UserInterface
         return $this->email;
     }
 
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
     /**
-     * @return null|\DateTime
+     * @return null|DateTime
      */
-    public function getUpdatedAt(): ?\DateTime
+    public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
     }
