@@ -4,3 +4,5 @@ parameters:
 	symfony:
 		container_xml_path: '%rootDir%/../../../var/cache/dev/srcApp_KernelDevDebugContainer.xml'
 	level: 6
+	excludes_analyse:
+	- %currentWorkingDirectory%/src/Domain/Migrations/*
