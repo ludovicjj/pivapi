@@ -1,0 +1,4 @@
+App\Domain\Entity\User:
+  user{1..10}:
+    __construct: [<current()>, <username()>, '123456', <firstName()>, <lastname()>, <email()>]
+    roles: ROLE_USER
