@@ -32,7 +32,7 @@ class JWTManager
 
     /**
      * @param int $exp
-     * @param array $claims
+     * @param array<string, int|string> $claims
      * @return Token
      *
      * @throws Exception

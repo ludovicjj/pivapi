@@ -122,7 +122,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         /** @var UserInterface $user */
         $user = $token->getUser();
 
-        /** @var array $output */
+        /** @var array<string, string|int> $output */
         $output = $this->normalizer->normalize($user);
 
         return new JsonResponse(

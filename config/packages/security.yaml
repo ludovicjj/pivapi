@@ -18,9 +18,6 @@ security:
             guard:
                 authenticators:
                     - App\Domain\Security\LoginAuthenticator
-        api:
-            pattern: ^/api
-            stateless: true
 
         main:
             anonymous: lazy

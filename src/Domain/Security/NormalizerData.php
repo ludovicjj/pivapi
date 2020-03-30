@@ -2,6 +2,7 @@
 
 namespace App\Domain\Security;
 
+use App\Domain\Entity\User;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Exception;
@@ -24,12 +25,15 @@ class NormalizerData
      */
     public function normalize(UserInterface $user): array
     {
+        /** @var User $currentUser */
+        $currentUser = $user;
+
         $exp = time() + 3600;
         $token = $this->jwtManager->createToken(
             $exp,
             [
-                'id' => $user->getId(),
-                'email' => $user->getEmail()
+                'id' => $currentUser->getId(),
+                'email' => $currentUser->getEmail()
             ]
         );
 
