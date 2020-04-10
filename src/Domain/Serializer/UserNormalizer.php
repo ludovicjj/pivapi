@@ -8,7 +8,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class UserNormalizer implements ContextAwareNormalizerInterface
 {
-    private $normalizer;
+    /** @var ObjectNormalizer $objectNormalizer */
+    private $objectNormalizer;
 
     const OBJECT_TYPE = 'user';
 
@@ -21,9 +22,9 @@ class UserNormalizer implements ContextAwareNormalizerInterface
     ];
 
     public function __construct(
-        ObjectNormalizer $normalizer
+        ObjectNormalizer $objectNormalizer
     ) {
-        $this->normalizer = $normalizer;
+        $this->objectNormalizer = $objectNormalizer;
     }
 
     /**
@@ -42,11 +43,13 @@ class UserNormalizer implements ContextAwareNormalizerInterface
      */
     public function normalize($user, $format = null, array $context = [])
     {
-        $context['query']['fields'][self::OBJECT_TYPE][] = 'id';
-        $publicAttributes = $this->filterPublicAttributes($context['query']['fields'][self::OBJECT_TYPE]);
-        $context['attributes'] = $publicAttributes;
+        /*$context['query']['fields'][self::OBJECT_TYPE][] = 'id';*/
+        /*$context['attributes'] = $publicAttributes;*/
+        $objectNormalizerContext = ['attributes' => []];
+        $allowAttributes = $context['query']['fields'][self::OBJECT_TYPE];
+        $objectNormalizerContext['attributes'] = $this->filterPublicAttributes($allowAttributes);
 
-        return  $this->normalizer->normalize($user, $format, $context);
+        return  $this->objectNormalizer->normalize($user, $format, $objectNormalizerContext);
     }
 
     private function filterPublicAttributes($attributes){

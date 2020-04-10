@@ -57,6 +57,7 @@ class NormalizerData
                 'query' => [
                     'fields' => [
                         UserNormalizer::OBJECT_TYPE => [
+                            'id',
                             'firstname',
                             'lastname',
                             'email',

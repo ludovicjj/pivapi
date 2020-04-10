@@ -1,0 +1,25 @@
+default:
+    suites:
+        default:
+            contexts:
+                - FixtureContext:
+                    entityManager: '@doctrine.orm.default_entity_manager'
+                - LoginContext
+                - UserContext:
+                    userRepository: '@App\Domain\Repository\UserRepository'
+                - Behat\MinkExtension\Context\MinkContext
+                - behatch:context:json
+                - behatch:context:rest
+                - FeatureContext:
+                    kernel: '@kernel'
+
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                bootstrap: features/bootstrap/bootstrap.php
+                class: App\Kernel
+        Behat\MinkExtension:
+            sessions:
+                default:
+                    symfony2: ~
+        Behatch\Extension: ~

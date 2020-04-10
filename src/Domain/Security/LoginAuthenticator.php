@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use Exception;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class LoginAuthenticator extends AbstractGuardAuthenticator
 {
@@ -115,7 +115,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      * @param TokenInterface $token
      * @param string $providerKey
      * @return JsonResponse|Response|null
-     * @throws Exception
+     * @throws ExceptionInterface
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
