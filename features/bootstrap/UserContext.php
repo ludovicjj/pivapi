@@ -17,11 +17,12 @@ class UserContext extends RawMinkContext implements Context
     }
 
     /**
-     * @Then a user with email :email should exist in database
+     * @Then user with email :email should exist in database
      * @param $email
+     *
      * @throws ExpectationException
      */
-    public function aUserWithEmailShouldExistInDatabase($email)
+    public function userWithEmailShouldExistInDatabase($email)
     {
         $user = $this->userRepository->findOneBy(['email' => $email]);
         if (is_null($user)) {

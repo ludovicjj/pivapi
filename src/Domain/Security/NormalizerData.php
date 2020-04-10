@@ -6,33 +6,31 @@ use App\Domain\Entity\User;
 use App\Domain\Serializer\UserNormalizer;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Exception;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+use Exception;
 
 class NormalizerData
 {
     /** @var JWTManager $jwtManager */
     private $jwtManager;
 
-    /** @var UserNormalizer */
-    private $userNormalizer;
-
+    /** @var NormalizerInterface $normalizer */
     private $normalizer;
 
     public function __construct(
         JWTManager $jwtManager,
-        UserNormalizer $userNormalizer,
         NormalizerInterface $normalizer
     ) {
         $this->jwtManager = $jwtManager;
-        $this->userNormalizer = $userNormalizer;
         $this->normalizer = $normalizer;
     }
 
     /**
      * @param UserInterface $user
+     *
      * @return array
+     *
      * @throws Exception
      * @throws ExceptionInterface
      */
@@ -50,7 +48,7 @@ class NormalizerData
             ]
         );
 
-        $userNormalizer = $this->userNormalizer->normalize(
+        $userNormalized = $this->normalizer->normalize(
             $currentUser,
             'json',
             [
@@ -70,7 +68,7 @@ class NormalizerData
 
         return [
             'token' => $token->__toString(),
-            'user' => $userNormalizer,
+            'user' => $userNormalized,
             'status' => Response::HTTP_OK,
         ];
     }

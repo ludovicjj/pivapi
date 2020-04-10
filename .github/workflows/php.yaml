@@ -36,5 +36,6 @@ jobs:
       - name: Test PHPUnit
         run: |
           php bin/phpunit
+          vendor/bin/behat
         env:
           DATABASE_URL_TEST: "sqlite:///%kernel.project_dir%/var/test.sqlite"

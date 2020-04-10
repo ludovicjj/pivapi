@@ -21,7 +21,7 @@ Feature: i need to be able to log in to api and obtain token
     And the JSON node "user.lastname" should be equal to "doe"
     And the JSON node "user.email" should be equal to "user2@contact.fr"
     And the JSON node "user.roles[0]" should be equal to "ROLE_ADMIN"
-    And a user with email "user2@contact.fr" should exist in database
+    And user with email "user2@contact.fr" should exist in database
 
   Scenario: [Success] Login as user
     When I load the fixture "createUser" in "user" folder
@@ -37,7 +37,7 @@ Feature: i need to be able to log in to api and obtain token
     And the JSON node "token" should exist
     And the JSON node "user" should have 5 elements
     And the JSON node "user.roles[0]" should be equal to "ROLE_USER"
-    And a user with email "user1@contact.fr" should exist in database
+    And user with email "user1@contact.fr" should exist in database
 
   Scenario: [Success] Login as user with email
     When I load the fixture "createUser" in "user" folder
