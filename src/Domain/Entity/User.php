@@ -31,7 +31,7 @@ class User implements UserInterface
     /** @var DateTime $createdAt */
     private $createdAt;
 
-    /** @var null $updatedAt */
+    /** @var null|DateTime $updatedAt */
     private $updatedAt;
 
     public function __construct(
@@ -53,22 +53,21 @@ class User implements UserInterface
         $this->updatedAt = null;
     }
 
-    /**
-     * @param array<int, string> $role
-     */
-    public function setRoles(array $role): void
-    {
-        $this->roles = $role;
-    }
-
-    public function getRoles(): array
-    {
-        return $this->roles;
-    }
-
     public function getId(): string
     {
         return $this->id;
+    }
+
+    public function setId(string $id): User
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    public function setUsername(string $username): User
+    {
+        $this->username = $username;
+        return $this;
     }
 
     public function getUsername(): string
@@ -76,9 +75,21 @@ class User implements UserInterface
         return $this->username;
     }
 
+    public function setPassword(string $password): User
+    {
+        $this->password = $password;
+        return $this;
+    }
+
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function setFirstname(string $firstname): User
+    {
+        $this->firstname = $firstname;
+        return $this;
     }
 
     public function getFirstname(): string
@@ -86,9 +97,21 @@ class User implements UserInterface
         return $this->firstname;
     }
 
+    public function setLastname(string $lastname): User
+    {
+        $this->lastname = $lastname;
+        return $this;
+    }
+
     public function getLastname(): string
     {
         return $this->lastname;
+    }
+
+    public function setEmail(string $email): User
+    {
+        $this->email = $email;
+        return $this;
     }
 
     public function getEmail(): string
@@ -96,9 +119,33 @@ class User implements UserInterface
         return $this->email;
     }
 
+    public function setRoles(array $role): User
+    {
+        $this->roles = $role;
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
+    }
+
+    public function setCreatedAt(DateTime $createdAt): User
+    {
+        $this->createdAt = $createdAt;
+        return $this;
+    }
+
+
     public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
+    }
+
+    public function setUpdatedAt(DateTime $updatedAt): User
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**

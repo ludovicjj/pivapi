@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Domain;
+namespace App\Tests\Domain\Repository;
 
 use App\Domain\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -38,7 +38,7 @@ class UserRepositoryTest extends KernelTestCase
     public function testCount()
     {
         $this->loader->load([
-            __DIR__ . '/../Fixtures/User/createUser.yml'
+            __DIR__ . '/../../Fixtures/User/createUser.yml'
         ]);
 
         $users = $this->entityManager->getRepository(User::class)->findAll();

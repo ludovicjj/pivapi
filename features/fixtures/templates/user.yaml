@@ -1,0 +1,3 @@
+App\Domain\Entity\User:
+  user_template (template):
+    __construct: ["user-id", "username", "123456", "firstName", "lastName", "email@contact.fr"]
