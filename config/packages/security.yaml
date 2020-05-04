@@ -19,6 +19,14 @@ security:
                 authenticators:
                     - App\Domain\Security\LoginAuthenticator
 
+        api:
+            pattern: ^/
+            stateless: true
+            provider: users_in_db
+            guard:
+                authenticators:
+                    - App\Domain\Security\JWTAuthenticator
+
         main:
             anonymous: lazy
 
