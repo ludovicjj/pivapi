@@ -87,13 +87,11 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     public function checkCredentials($credentials, UserInterface $user): bool
     {
         /** @var bool $isValid */
-        $isValid = $this->encoderFactory->getEncoder($user)->isPasswordValid(
+        return $this->encoderFactory->getEncoder($user)->isPasswordValid(
             $user->getPassword(),
             $credentials['password'],
             $user->getSalt()
         );
-
-        return $isValid;
     }
 
     /**
@@ -122,7 +120,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
         /** @var UserInterface $user */
         $user = $token->getUser();
 
-        /** @var array<string, string|int> $output */
+        /** @var array $output */
         $output = $this->normalizer->normalize($user);
 
         return new JsonResponse(
@@ -134,7 +132,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     /**
      * @return bool
      */
-    public function supportsRememberMe()
+    public function supportsRememberMe(): bool
     {
         return false;
     }

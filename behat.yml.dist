@@ -4,7 +4,9 @@ default:
             contexts:
                 - FixtureContext:
                     entityManager: '@doctrine.orm.default_entity_manager'
-                - LoginContext
+                - LoginContext:
+                    userRepository: '@App\Domain\Repository\UserRepository'
+                    JWTManager: '@App\Domain\Security\JWTManager'
                 - UserContext:
                     userRepository: '@App\Domain\Repository\UserRepository'
                 - Behat\MinkExtension\Context\MinkContext
