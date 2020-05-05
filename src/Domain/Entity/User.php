@@ -3,6 +3,7 @@
 namespace App\Domain\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
 
@@ -174,7 +175,7 @@ class User implements UserInterface
         return null;
     }
 
-    public function getPosts(): ArrayCollection
+    public function getPosts()
     {
         return $this->posts;
     }

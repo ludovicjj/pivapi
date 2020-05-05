@@ -158,6 +158,9 @@
     "lcobucci/jwt": {
         "version": "3.3.1"
     },
+    "league/tactician-doctrine": {
+        "version": "v1.1.1"
+    },
     "liip/test-fixtures-bundle": {
         "version": "1.7.0"
     },
