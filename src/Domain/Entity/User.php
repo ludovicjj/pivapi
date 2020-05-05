@@ -2,6 +2,7 @@
 
 namespace App\Domain\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
 
@@ -34,6 +35,9 @@ class User implements UserInterface
     /** @var null|DateTime $updatedAt */
     private $updatedAt;
 
+    /** @var ArrayCollection $posts */
+    private $posts;
+
     public function __construct(
         string $id,
         string $username,
@@ -51,6 +55,7 @@ class User implements UserInterface
         $this->roles = [];
         $this->createdAt = new DateTime();
         $this->updatedAt = null;
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): string
@@ -148,9 +153,6 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return null|DateTime
-     */
     public function getUpdatedAt(): ?DateTime
     {
         return $this->updatedAt;
@@ -170,5 +172,22 @@ class User implements UserInterface
     public function eraseCredentials()
     {
         return null;
+    }
+
+    public function getPosts(): ArrayCollection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Post $post): User
+    {
+        $this->posts->add($post);
+        return $this;
+    }
+
+    public function removePost(Post $post): User
+    {
+        $this->posts->removeElement($post);
+        return $this;
     }
 }
