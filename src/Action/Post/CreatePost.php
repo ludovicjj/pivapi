@@ -52,8 +52,6 @@ class CreatePost
         $constraintViolationList = $this->validator->validate($command);
         ConstraintValidator::handleViolation($constraintViolationList);
 
-        dd('payload is valid');
-
         $this->commandBus->handle($command);
 
         return new JsonResponse(

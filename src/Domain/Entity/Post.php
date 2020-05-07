@@ -39,7 +39,7 @@ class Post
         $this->title = $title;
         $this->abstract = $abstract;
         $this->content = $content;
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new DateTime();
         $this->updatedAt = null;
         $this->user = $user;
     }
