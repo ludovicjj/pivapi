@@ -8,6 +8,8 @@ use App\Domain\Entity\Post;
 use App\Domain\Repository\PostRepository;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
 
 class TitleAvailableValidator extends ConstraintValidator
 {
@@ -20,14 +22,25 @@ class TitleAvailableValidator extends ConstraintValidator
         $this->postRepository = $postRepository;
     }
 
-    public function validate($command, Constraint $constraint)
+    /**
+     * @param mixed $command
+     * @param Constraint $constraint
+     */
+    public function validate($command, Constraint $constraint): void
     {
+        if (!$constraint instanceof TitleAvailable) {
+            throw new UnexpectedTypeException($constraint, TitleAvailable::class);
+        }
+
+        /** @var TitleAvailable $titleConstraint */
+        $titleConstraint = $constraint;
+
         /** @var null|Post $post */
         $post = $this->postRepository->findOneBy(['title' => $command->getTitle()]);
 
         if (!is_null($post) && $post instanceof Post) {
             $this->context
-                ->buildViolation($constraint->message)
+                ->buildViolation($titleConstraint->message)
                 ->atPath('title')
                 ->addViolation();
         }

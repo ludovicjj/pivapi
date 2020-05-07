@@ -100,7 +100,7 @@ class JWTAuthenticator extends AbstractGuardAuthenticator
      * @param AuthenticationException $exception
      * @return JsonResponse|Response|null
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): JsonResponse
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         return new JsonResponse(
             ['error' => 'invalid token'],

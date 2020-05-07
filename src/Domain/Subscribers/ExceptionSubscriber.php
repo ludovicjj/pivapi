@@ -24,7 +24,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     /**
      * @param ExceptionEvent $event
      */
-    public function onProcessException(ExceptionEvent $event)
+    public function onProcessException(ExceptionEvent $event): void
     {
         $exception = $event->getThrowable();
         switch (get_class($exception)) {
@@ -40,7 +40,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
     /**
      * @param ExceptionEvent $event
      */
-    private function processJWTException(ExceptionEvent $event)
+    private function processJWTException(ExceptionEvent $event): void
     {
         /** @var JWTException $exception */
         $exception = $event->getThrowable();
@@ -55,7 +55,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function processValidatorException(ExceptionEvent $event)
+    private function processValidatorException(ExceptionEvent $event): void
     {
         /** @var ValidatorException $exception */
         $exception = $event->getThrowable();

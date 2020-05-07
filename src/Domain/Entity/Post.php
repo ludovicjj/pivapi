@@ -66,7 +66,7 @@ class Post
         return $this->title;
     }
 
-    public function setAbstract($abstract): Post
+    public function setAbstract(string $abstract): Post
     {
         $this->abstract = $abstract;
         return $this;
@@ -99,7 +99,7 @@ class Post
         return $this->createdAt;
     }
 
-    public function setUpdatedAt(DateTime $dateTime)
+    public function setUpdatedAt(DateTime $dateTime): Post
     {
         $this->updatedAt = $dateTime;
         return $this;

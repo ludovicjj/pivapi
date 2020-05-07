@@ -14,7 +14,7 @@ class ConstraintValidator
      * @param ConstraintViolationListInterface $constraintList
      * @throws ValidatorException
      */
-    public static function handleViolation(ConstraintViolationListInterface $constraintList)
+    public static function handleViolation(ConstraintViolationListInterface $constraintList): void
     {
         if (count($constraintList) > 0) {
             $errors = [];

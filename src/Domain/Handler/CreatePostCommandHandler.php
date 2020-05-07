@@ -30,7 +30,7 @@ class CreatePostCommandHandler
      * @param CreatePostCommand $command
      * @throws ORMException
      */
-    public function handle(CreatePostCommand $command)
+    public function handle(CreatePostCommand $command): void
     {
         /** @var User $user */
         $user = $this->security->getUser();

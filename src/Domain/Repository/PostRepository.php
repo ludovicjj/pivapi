@@ -18,7 +18,7 @@ class PostRepository extends AbstractRepository
      * @param Post $post
      * @throws ORMException
      */
-    public function persist(Post $post)
+    public function persist(Post $post): void
     {
         $this->_em->persist($post);
     }

@@ -36,7 +36,7 @@ class User implements UserInterface
     /** @var null|DateTime $updatedAt */
     private $updatedAt;
 
-    /** @var ArrayCollection $posts */
+    /** @var ArrayCollection<int, Post> $posts */
     private $posts;
 
     public function __construct(
@@ -175,6 +175,9 @@ class User implements UserInterface
         return null;
     }
 
+    /**
+     * @return ArrayCollection<int, Post>
+     */
     public function getPosts()
     {
         return $this->posts;
