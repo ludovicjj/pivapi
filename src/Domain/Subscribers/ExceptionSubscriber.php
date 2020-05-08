@@ -74,7 +74,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         );
     }
 
-    private function processNotFoundException(ExceptionEvent $event)
+    private function processNotFoundException(ExceptionEvent $event): void
     {
         /** @var NotFoundHttpException $exception */
         $exception = $event->getThrowable();
