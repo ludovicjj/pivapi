@@ -4,7 +4,7 @@
 namespace App\Domain\Command;
 
 
-class CreatePostCommand
+class CreatePostCommand extends AbstractCommand
 {
     /** @var string|null $postId */
     private $postId;
