@@ -5,6 +5,8 @@ namespace App\Domain\Validator\Constraints;
 
 
 use App\Domain\Command\AbstractCommand;
+use App\Domain\Command\CreatePostCommand;
+use App\Domain\Command\UpdatePostCommand;
 use App\Domain\Entity\Post;
 use App\Domain\Repository\PostRepository;
 use Symfony\Component\Validator\Constraint;
@@ -39,7 +41,7 @@ class TitleAvailableValidator extends ConstraintValidator
         /** @var null|Post $post */
         $post = $this->postRepository->findOneBy(['title' => $command->getTitle()]);
 
-        if (!$this->isSamePost($command, $post)) {
+        if (!$this->isValidTitle($command, $post)) {
             $this->context
                 ->buildViolation($titleConstraint->message)
                 ->atPath('title')
@@ -48,13 +50,25 @@ class TitleAvailableValidator extends ConstraintValidator
     }
 
     /**
-     * @param $command
+     * @param AbstractCommand $command
      * @param Post|null $post
      * @return bool
      */
-    private function isSamePost(AbstractCommand $command, ?Post $post): bool
+    private function isValidTitle(AbstractCommand $command, ?Post $post): bool
     {
-        if (!is_null($post) && $post instanceof Post && $command->getPostId() === $post->getId()) {
+        if (
+            $command instanceof CreatePostCommand
+            && is_null($post)
+        ) {
+            return true;
+        }
+
+        if (
+            !is_null($post)
+            && $command instanceof UpdatePostCommand
+            && $post instanceof Post
+            && $command->getPostId() === $post->getId()
+        ) {
             return true;
         }
 
