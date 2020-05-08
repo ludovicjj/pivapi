@@ -27,11 +27,11 @@ Feature: As an authenticated user i must create post
       """
     Then the response should be in JSON
     And the response status code should be 400
-    And the JSON node "error" should exist
-    And the JSON node "error" should have 3 elements
-    And the JSON node "error.title[0]" should be equal to "Le champs titre est obligatoire"
-    And the JSON node "error.abstract[0]" should be equal to "Le champs extrait est obligatoire"
-    And the JSON node "error.content[0]" should be equal to "Le champs contenu est obligatoire"
+    And the JSON node "errors" should exist
+    And the JSON node "errors" should have 3 elements
+    And the JSON node "errors.title[0]" should be equal to "Le champs titre est obligatoire"
+    And the JSON node "errors.abstract[0]" should be equal to "Le champs extrait est obligatoire"
+    And the JSON node "errors.content[0]" should be equal to "Le champs contenu est obligatoire"
 
   Scenario:[Fail] Try to create post while being authenticated and not available title
     When I load the fixture "createPost" in "post" folder
@@ -46,9 +46,9 @@ Feature: As an authenticated user i must create post
       """
     Then the response should be in JSON
     And the response status code should be 400
-    And the JSON node "error" should exist
-    And the JSON node "error" should have 1 element
-    And the JSON node "error.title[0]" should be equal to "Il existe déja un article avec ce titre"
+    And the JSON node "errors" should exist
+    And the JSON node "errors" should have 1 element
+    And the JSON node "errors.title[0]" should be equal to "Il existe déja un article avec ce titre"
 
   Scenario:[Success] Try to create post while being authenticated and valid payload
     When I load the fixture "createPost" in "post" folder

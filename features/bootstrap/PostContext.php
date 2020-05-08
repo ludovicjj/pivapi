@@ -11,6 +11,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class PostContext extends RawMinkContext implements Context
 {
+    use PropertyAccessTrait;
+
     /** @var PostRepository $postRepository */
     private $postRepository;
 
@@ -60,30 +62,14 @@ class PostContext extends RawMinkContext implements Context
     }
 
     /**
-     * @param $object
+     * @Then post with id :postId should have :property equal to :value
+     * @param $postId
      * @param $property
      * @param $value
      * @throws ExpectationException
      */
-    private function testPropertyEqualsValue($object, $property, $value)
+    public function postWithIdShouldHaveEqualTo($postId, $property, $value)
     {
-        $class = substr(get_class($object), strrpos(get_class($object), '\\') + 1);
-
-        [$value, $actual] = $this->getTestAndActualValues($object, $property, $value);
-
-        if ($value != $actual) {
-            throw new ExpectationException(
-                sprintf(
-                    "%s::get%s() should be equal to \"%s\" but get \"%s\"",
-                    $class, ucfirst($property), $actual, $value),
-                $this->getSession()->getDriver()
-            );
-        }
-    }
-
-    private function getTestAndActualValues($object, $property, $value)
-    {
-        $actual = $this->propertyAccessor->getValue($object, $property);
-        return [$value, $actual];
+        $this->testPropertyEqualsValue($this->postRepository->find($postId), $property, $value);
     }
 }

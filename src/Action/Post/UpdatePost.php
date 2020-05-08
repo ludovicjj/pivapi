@@ -26,6 +26,7 @@ class UpdatePost
     /** @var CommandBus $commandBus */
     private $commandBus;
 
+    /** @var PostRepository $postRepository */
     private $postRepository;
 
     public function __construct(
