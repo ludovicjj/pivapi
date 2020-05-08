@@ -4,7 +4,7 @@
 namespace App\Domain\Command;
 
 
-class CreatePostCommand extends AbstractCommand
+class UpdatePostCommand extends AbstractCommand
 {
     /** @var string|null $postId */
     private $postId;
@@ -18,7 +18,7 @@ class CreatePostCommand extends AbstractCommand
     /** @var string|null $content */
     private $content;
 
-    public function setPostId(string $postId): CreatePostCommand
+    public function setPostId(string $postId): UpdatePostCommand
     {
         $this->postId = $postId;
         return $this;
@@ -29,7 +29,7 @@ class CreatePostCommand extends AbstractCommand
         return $this->postId;
     }
 
-    public function setTitle(string $title): CreatePostCommand
+    public function setTitle(string $title): UpdatePostCommand
     {
         $this->title = $title;
         return $this;
@@ -40,7 +40,7 @@ class CreatePostCommand extends AbstractCommand
         return $this->title;
     }
 
-    public function setAbstract(string $abstract): CreatePostCommand
+    public function setAbstract(string $abstract): UpdatePostCommand
     {
         $this->abstract = $abstract;
         return $this;
@@ -51,7 +51,7 @@ class CreatePostCommand extends AbstractCommand
         return $this->abstract;
     }
 
-    public function setContent(string $content): CreatePostCommand
+    public function setContent(string $content): UpdatePostCommand
     {
         $this->content = $content;
         return $this;

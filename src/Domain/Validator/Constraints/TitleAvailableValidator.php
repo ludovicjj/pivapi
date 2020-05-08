@@ -4,8 +4,11 @@
 namespace App\Domain\Validator\Constraints;
 
 
-use App\Domain\Entity\Post;
+use App\Domain\Command\AbstractCommand;
+use App\Domain\Command\CreatePostCommand;
+use App\Domain\Command\UpdatePostCommand;
 use App\Domain\Repository\PostRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -25,6 +28,7 @@ class TitleAvailableValidator extends ConstraintValidator
     /**
      * @param mixed $command
      * @param Constraint $constraint
+     * @throws NonUniqueResultException
      */
     public function validate($command, Constraint $constraint): void
     {
@@ -35,14 +39,31 @@ class TitleAvailableValidator extends ConstraintValidator
         /** @var TitleAvailable $titleConstraint */
         $titleConstraint = $constraint;
 
-        /** @var null|Post $post */
-        $post = $this->postRepository->findOneBy(['title' => $command->getTitle()]);
-
-        if (!is_null($post) && $post instanceof Post) {
+        if (!$this->isValidTitle($command)) {
             $this->context
                 ->buildViolation($titleConstraint->message)
                 ->atPath('title')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @param AbstractCommand $command
+     * @return bool
+     * @throws NonUniqueResultException
+     */
+    private function isValidTitle(AbstractCommand $command): bool
+    {
+        if ($command instanceof CreatePostCommand) {
+            $post = $this->postRepository->findOneBy(['title' => $command->getTitle()]);
+            return is_null($post);
+        }
+
+        if ($command instanceof UpdatePostCommand) {
+            $post = $this->postRepository->isUniqueTitle($command->getPostId(), $command->getTitle());
+            return is_null($post);
+        }
+
+        return false;
     }
 }

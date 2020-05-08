@@ -1,0 +1,21 @@
+include:
+  - ../templates/user.yaml
+  - ../templates/post.yaml
+
+App\Domain\Entity\User:
+  user1 (extends user_template):
+    id: "user1"
+    username: "john-doe"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: "john"
+    lastname: "wick"
+    email: "user1@contact.fr"
+    roles: [ROLE_USER]
+
+App\Domain\Entity\Post:
+  post1 (extends post_template):
+    __construct: ["post1", "mon titre", "mon extrait", "mon contenu", "@user1"]
+    title: "titre du post1"
+  post2 (extends post_template):
+    __construct: ["post2", "un autre titre", "mon extrait", "mon contenu", "@user1"]
+    title: "titre du post2"
