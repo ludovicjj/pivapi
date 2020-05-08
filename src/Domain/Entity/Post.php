@@ -44,6 +44,18 @@ class Post
         $this->user = $user;
     }
 
+    /**
+     * @param string $title
+     * @param string $abstract
+     * @param string $content
+     */
+    public function update(string $title, string $abstract, string $content): void
+    {
+        $this->title = $title;
+        $this->abstract = $abstract;
+        $this->content = $content;
+    }
+
     public function setId(string $id): Post
     {
         $this->id = $id;

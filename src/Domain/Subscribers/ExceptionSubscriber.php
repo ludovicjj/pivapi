@@ -8,6 +8,7 @@ use App\Domain\Exceptions\ValidatorException;
 use App\Responder\ErrorResponder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
 {
@@ -33,6 +34,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case ValidatorException::class:
                 $this->processValidatorException($event);
+                break;
+            case NotFoundHttpException::class:
+                $this->processNotFoundException($event);
                 break;
         }
     }
@@ -64,6 +68,21 @@ class ExceptionSubscriber implements EventSubscriberInterface
             ErrorResponder::response(
                 [
                     'error' => $exception->getErrors()
+                ],
+                $exception->getStatusCode()
+            )
+        );
+    }
+
+    private function processNotFoundException(ExceptionEvent $event)
+    {
+        /** @var NotFoundHttpException $exception */
+        $exception = $event->getThrowable();
+
+        $event->setResponse(
+            ErrorResponder::response(
+                [
+                    'errors' => $exception->getMessage()
                 ],
                 $exception->getStatusCode()
             )
