@@ -1,0 +1,19 @@
+App\Domain\Command\CreatePostCommand:
+  properties:
+    title:
+      - Length:
+          max: 255
+          maxMessage: Le champs titre est limité à {{ limit }} caractères
+      - NotBlank:
+          message: Le champs titre est obligatoire
+    abstract:
+      - Length:
+          max: 255
+          maxMessage: Le champs extrait est limité à {{ limit }} caractères
+      - NotBlank:
+          message: Le champs extrait est obligatoire
+    content:
+      - NotBlank:
+          message: Le champs contenu est obligatoire
+  constraints:
+    - App\Domain\Validator\Constraints\TitleAvailable: ~

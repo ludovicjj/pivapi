@@ -9,6 +9,8 @@ default:
                     JWTManager: '@App\Domain\Security\JWTManager'
                 - UserContext:
                     userRepository: '@App\Domain\Repository\UserRepository'
+                - PostContext:
+                    postRepository: '@App\Domain\Repository\PostRepository'
                 - Behat\MinkExtension\Context\MinkContext
                 - behatch:context:json
                 - behatch:context:rest

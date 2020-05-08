@@ -13,5 +13,8 @@
         <field name="roles" type="array" />
         <field name="createdAt" type="datetime" />
         <field name="updatedAt" type="datetime" nullable="true" />
+
+        <one-to-many field="posts" target-entity="App\Domain\Entity\Post" mapped-by="user" />
+
     </entity>
 </doctrine-mapping>

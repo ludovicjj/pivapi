@@ -1,3 +1,4 @@
+@api
 @api_authenticator
 Feature: Test JWTAuthenticator guard
 

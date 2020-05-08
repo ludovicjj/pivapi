@@ -86,7 +86,6 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
      */
     public function checkCredentials($credentials, UserInterface $user): bool
     {
-        /** @var bool $isValid */
         return $this->encoderFactory->getEncoder($user)->isPasswordValid(
             $user->getPassword(),
             $credentials['password'],
