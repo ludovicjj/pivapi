@@ -3,6 +3,32 @@
 
 Feature: i need to be able to log in to api and obtain token
 
+  Scenario: [Success] Fail Login with invalid username
+    When I load the fixture "createUser" in "user" folder
+    And I send a "POST" request to "/api/login" with body:
+    """
+    {
+      "username": "user999",
+      "password": "123456"
+    }
+    """
+    Then the response status code should be 403
+    And the response should be in JSON
+    And the JSON node "message" should exist
+
+  Scenario: [Success] Fail Login with invalid password
+    When I load the fixture "createUser" in "user" folder
+    And I send a "POST" request to "/api/login" with body:
+    """
+    {
+      "username": "user1",
+      "password": "1234567"
+    }
+    """
+    Then the response status code should be 403
+    And the response should be in JSON
+    And the JSON node "message" should exist
+
   Scenario: [Success] Login as admin
     When I load the fixture "createUser" in "user" folder
     And I send a "POST" request to "/api/login" with body:
