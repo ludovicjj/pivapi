@@ -42,7 +42,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
             // you might translate this message
             'message' => 'Authentication Required'
         );
-        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
+        return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 
     /**
@@ -101,8 +101,7 @@ class LoginAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $data = [
-            'message' => strtr($exception->getMessageKey(), $exception->getMessageData()),
-            'status' => Response::HTTP_FORBIDDEN
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
         ];
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
