@@ -25,7 +25,7 @@ class DeletePostCommandHandler
      * @throws PostNotFoundException
      * @throws ORMException
      */
-    public function handle(DeletePostCommand $command)
+    public function handle(DeletePostCommand $command): void
     {
         $post = $this->postRepository->find($command->getPostId());
 

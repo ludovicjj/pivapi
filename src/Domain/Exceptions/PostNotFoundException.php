@@ -11,7 +11,7 @@ class PostNotFoundException extends \Exception
     /** @var int $statusCode */
     private $statusCode;
 
-    public function __construct($message = "", $statusCode = 400, Throwable $previous = null)
+    public function __construct(string $message = "", int $statusCode = 400, Throwable $previous = null)
     {
         $this->statusCode = $statusCode;
 
