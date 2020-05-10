@@ -84,7 +84,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $event->setResponse(
             ErrorResponder::response(
                 [
-                    'errors' => $exception->getMessage()
+                    'errors' => ['message' => $exception->getMessage()]
                 ],
                 $exception->getStatusCode()
             )

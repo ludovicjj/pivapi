@@ -72,4 +72,21 @@ class PostContext extends RawMinkContext implements Context
     {
         $this->testPropertyEqualsValue($this->postRepository->find($postId), $property, $value);
     }
+
+    /**
+     * @Then post with id :arg1 should not exist in database
+     * @param $postId
+     * @throws ExpectationException
+     */
+    public function postWithIdShouldNotExistInDatabase($postId)
+    {
+        $post = $this->postRepository->find($postId);
+
+        if (!is_null($post)) {
+            throw new ExpectationException(
+                sprintf("Expected null but found post with id %s", $postId),
+                $this->getSession()->getDriver()
+            );
+        }
+    }
 }
