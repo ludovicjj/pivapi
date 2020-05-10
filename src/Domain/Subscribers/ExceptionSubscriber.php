@@ -4,6 +4,7 @@
 namespace App\Domain\Subscribers;
 
 use App\Domain\Exceptions\JWTException;
+use App\Domain\Exceptions\PostNotFoundException;
 use App\Domain\Exceptions\ValidatorException;
 use App\Responder\ErrorResponder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -36,6 +37,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 $this->processValidatorException($event);
                 break;
             case NotFoundHttpException::class:
+            case PostNotFoundException::class:
                 $this->processNotFoundException($event);
                 break;
         }
@@ -82,7 +84,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         $event->setResponse(
             ErrorResponder::response(
                 [
-                    'errors' => $exception->getMessage()
+                    'errors' => [
+                        'message' => $exception->getMessage()
+                    ]
                 ],
                 $exception->getStatusCode()
             )

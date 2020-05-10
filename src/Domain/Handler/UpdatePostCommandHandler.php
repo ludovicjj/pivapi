@@ -21,6 +21,7 @@ class UpdatePostCommandHandler
 
     /**
      * @param UpdatePostCommand $command
+     * @throws \Exception
      */
     public function handle(UpdatePostCommand $command): void
     {
