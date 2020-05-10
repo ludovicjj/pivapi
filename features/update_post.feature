@@ -29,7 +29,7 @@ Feature: As an authenticated user i must update post
     Then the response should be in JSON
     And the response status code should be 404
     And the JSON node "errors" should exist
-    And the JSON node "errors" should be equal to "Post with id post9999 not found"
+    And the JSON node "errors.message" should be equal to "Post with id post9999 not found"
 
   Scenario:[Fail] As authenticated try to update post with an existing title
     When I load the fixture "updatePost" in "post" folder
