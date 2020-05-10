@@ -36,6 +36,15 @@ class PostRepository extends AbstractRepository
     }
 
     /**
+     * @param Post $post
+     * @throws ORMException
+     */
+    public function remove(Post $post): void
+    {
+        $this->_em->remove($post);
+    }
+
+    /**
      * @param string $id
      * @param string $title
      * @return Post|null
