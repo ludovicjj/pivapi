@@ -5,8 +5,10 @@ namespace App\Domain\Repository;
 
 
 use App\Domain\Entity\Post;
+use App\Domain\Search\PostSearch;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class PostRepository extends AbstractRepository
 {
@@ -59,5 +61,20 @@ class PostRepository extends AbstractRepository
             ->setParameter('title', $title)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    public function search(PostSearch $postSearch)
+    {
+        $queryBuilder = $this->createQueryBuilder('post');
+
+        $queryBuilder->addOrderBy('post.id', 'asc');
+
+        if ($postSearch->getItems() !== null) {
+            $queryBuilder
+                ->setFirstResult(($postSearch->getPage() - 1) * $postSearch->getItems())
+                ->setMaxResults($postSearch->getItems());
+        }
+
+        return new Paginator($queryBuilder);
     }
 }
