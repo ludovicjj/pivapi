@@ -55,3 +55,8 @@ services:
                 - '@League\Tactician\Plugins\LockingMiddleware'
                 - '@League\Tactician\Doctrine\ORM\TransactionMiddleware'
                 - '@League\Tactician\Handler\CommandHandlerMiddleware'
+
+    App\Domain\Serializer\Includes\IncludesNormalizer:
+        arguments:
+            - '@serializer'
+        lazy: true
