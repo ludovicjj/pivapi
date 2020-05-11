@@ -9,29 +9,27 @@ class PostSearch
     /** @var array $filters */
     private $filters;
 
+    /** @var array $orders */
+    private $orders;
+
     /** @var int $page */
     private $page;
 
     /** @var int $items */
     private $items;
 
-    /** @var array $orders */
-    private $orders;
-
     public function __construct(
         array $filters = [],
+        array $orders = [],
         int $page = 1,
-        int $items = 5,
-        array $orders = []
+        int $items = 5
     ) {
-        // TODO check filters
-
-        //TODO check orders
-
+        // TODO check allow filters
         $this->filters = $filters;
+        //TODO check allow orders
+        $this->orders = $orders;
         $this->page = $page;
         $this->items = $items;
-        $this->orders = $orders;
     }
 
     public function getFilters(): array
