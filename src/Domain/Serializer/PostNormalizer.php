@@ -4,11 +4,14 @@
 namespace App\Domain\Serializer;
 
 
+use App\Domain\Entity\AbstractEntity;
 use App\Domain\Entity\Post;
+use App\Domain\Exceptions\NormalizerException;
 use App\Domain\Serializer\Includes\IncludesNormalizer;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use ArrayObject;
 
 class PostNormalizer implements ContextAwareNormalizerInterface
 {
@@ -54,17 +57,34 @@ class PostNormalizer implements ContextAwareNormalizerInterface
      * @param mixed $post
      * @param null $format
      * @param array $context
-     * @return array|\ArrayObject|bool|float|int|mixed|string|null
+     * @return array
      * @throws ExceptionInterface
+     * @throws NormalizerException
      */
     public function normalize($post, $format = null, array $context = [])
     {
-        $objectNormalizerContext = ['attributes' => []];
+        if (!isset($context['query']['fields'][self::OBJECT_TYPE])) {
+            throw new NormalizerException(
+                sprintf('Not found index %s', self::OBJECT_TYPE),
+                400
+            );
+        }
+
         $allowAttributes = $context['query']['fields'][self::OBJECT_TYPE];
         $objectNormalizerContext['attributes'] = $this->filterAllowAttributes($allowAttributes);
 
-        return $this->objectNormalizer->normalize($post, $format, $objectNormalizerContext)
-            + $this->includesNormalizer->normalizeIncludes($post, $format, $context, self::ALLOWED_INCLUDES);
+        /** @var array $postNormalized */
+        $postNormalized = $this->objectNormalizer->normalize($post, $format, $objectNormalizerContext);
+
+        /** @var array $includeNormalized */
+        $includeNormalized = $this->includesNormalizer->normalizeIncludes(
+            $post,
+            $format,
+            $context,
+            self::ALLOWED_INCLUDES
+        );
+
+        return array_merge($postNormalized, $includeNormalized);
     }
 
     /**
