@@ -5,7 +5,7 @@ namespace App\Domain\Entity;
 
 use DateTime;
 
-class Post
+class Post extends AbstractEntity
 {
     /** @var string $id */
     private $id;

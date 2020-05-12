@@ -7,7 +7,7 @@ use Doctrine\ORM\PersistentCollection;
 use Symfony\Component\Security\Core\User\UserInterface;
 use DateTime;
 
-class User implements UserInterface
+class User extends AbstractEntity implements UserInterface
 {
     /** @var string $id */
     private $id;
