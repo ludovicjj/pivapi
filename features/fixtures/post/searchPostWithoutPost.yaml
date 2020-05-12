@@ -1,0 +1,12 @@
+include:
+  - ../templates/user.yaml
+
+App\Domain\Entity\User:
+  user1 (extends user_template):
+    id: "user1"
+    username: "john-doe"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: "john"
+    lastname: "wick"
+    email: "user1@contact.fr"
+    roles: [ROLE_USER]
