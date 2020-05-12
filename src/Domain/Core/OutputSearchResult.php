@@ -34,7 +34,7 @@ class OutputSearchResult
      * PaginatorResult constructor.
      * @param array $items
      * @param int $limit
-     * @param int|float $nbItems
+     * @param int $nbItems
      * @param int $page
      * @param Request $request
      * @param UrlGeneratorInterface $urlGenerator
