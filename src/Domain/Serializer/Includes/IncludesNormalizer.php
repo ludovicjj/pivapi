@@ -3,6 +3,7 @@
 
 namespace App\Domain\Serializer\Includes;
 
+use App\Domain\Entity\AbstractEntity;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,53 +23,92 @@ class IncludesNormalizer
         $this->normalizer = $normalizer;
     }
 
+    /**
+     * @param AbstractEntity $object
+     * @param null $format
+     * @param array $context
+     * @param array $allowedIncludes
+     * @return AbstractEntity[]|array
+     */
     public function normalizeIncludes(
-        $object,
+        AbstractEntity $object,
         $format,
         array $context = [],
         array $allowedIncludes = []
-    )
+    ) {
+        $context['query']['includes'] = $this->filterIncludes($context, $allowedIncludes);
+        return $this->getIncludes($object, $format, $context);
+    }
+
+    /**
+     * @param array $context
+     * @param array $allowedIncludes
+     * @return array|string[]
+     */
+    private function filterIncludes(array $context, array $allowedIncludes): array
     {
-        if (!isset($context['query']['includes'])) {
-            return [];
-        }
+        return array_filter(array_unique($context['query']['includes']), function ($include) use ($allowedIncludes) {
+            return in_array(explode('.', $include)[0], $allowedIncludes);
+        });
+    }
 
-        $context['query']['includes'] = array_unique(
-            array_filter($context['query']['includes'], function($include) use ($allowedIncludes) {
-                return in_array(explode('.', $include)[0], $allowedIncludes);
-            })
-        );
-
-        return array_map(function($include) use ($object, $format, $context){
+    /**
+     * @param AbstractEntity $object
+     * @param null $format
+     * @param array $context
+     * @return array
+     */
+    private function getIncludes(AbstractEntity $object, $format, array $context)
+    {
+        return array_map(function($root) use ($object, $format, $context) {
             return $this->normalizer->normalize(
-                $this->propertyAccessor->getValue($object, $include),
+                $this->getSubObject($object, $root),
                 $format,
-                $this->getSubContext($context, $include)
+                $this->getSubContext($context, $root)
             );
         }, $this->getRootIncludes($context));
     }
 
     /**
-     * @param $context
-     * @return array
+     * @param array $context
+     * @return array|string[]
      */
-    private function getRootIncludes($context): array
+    private function getRootIncludes(array $context): array
     {
-        return array_reduce($context['query']['includes'], function($carry, $include){
+        return array_reduce($context['query']['includes'], function($carry, $include) {
             $rootInclude = explode('.', $include)[0];
-            return $carry + array($rootInclude => $rootInclude);
+            return $carry + [$rootInclude => $rootInclude];
         }, []);
     }
 
-    private function getSubContext($context, $include): array
+    /**
+     * @param AbstractEntity $object
+     * @param string $include
+     * @return AbstractEntity
+     */
+    private function getSubObject(AbstractEntity$object, string $include): AbstractEntity
     {
-        $subContext = array_filter($context['query']['includes'], function($subInclude) use ($include) {
-            return strpos($subInclude, $include.'.') === 0;
+        return $this->propertyAccessor->getValue($object, $include);
+    }
+
+    /**
+     * @param array $context
+     * @param string $root
+     * @return array
+     */
+    private function getSubContext(array $context, string $root): array
+    {
+        /** @var array $subContextWithRoot */
+        $subContextWithRoot = array_filter($context['query']['includes'], function($subInclude) use ($root) {
+            return strpos($subInclude, $root . '.') === 0;
         });
 
-        $context['query']['includes'] = array_map(function($subContext) {
-            return substr($subContext, strpos($subContext, '.') + 1);
-        }, $subContext);
+        /** @var array $subContext */
+        $subContext = array_map(function($subContextWithRoot) {
+            return substr($subContextWithRoot, strpos($subContextWithRoot, '.') + 1);
+        }, $subContextWithRoot);
+
+        $context['query']['fields'][$root] = $subContext;
 
         return $context;
     }
