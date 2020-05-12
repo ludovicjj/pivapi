@@ -49,22 +49,20 @@ class SearchPost
      */
     public function search(Request $request)
     {
+        $page = $request->query->get('page', 1);
+        $items = $request->get('items', 5);
+
         $paginator = $this->postRepository->search(
             new PostSearch(
                 $request->query->get('filters', []),
                 OrderTransformer::transformToArray($request->query->get('order')),
-                $request->query->get('page', 1),
-                $request->get('items', 5)
+                $page,
+                $items
             )
         );
 
         $output = new OutputSearchResult(
-            iterator_to_array($paginator),
-            $request->get('items', 5),
-            $paginator->count(),
-            $request->query->get('page', 1),
-            $request,
-            $this->urlGenerator
+            iterator_to_array($paginator), $items, $paginator->count(), $page, $request, $this->urlGenerator
         );
 
 

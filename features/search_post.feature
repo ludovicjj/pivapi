@@ -8,13 +8,21 @@ Feature: As an authenticated user i must search post
     Then the response should be in JSON
     And the response status code should be 401
 
-  Scenario:[Success] As an authenticated user i try to search post with invalid key fields
+  Scenario:[Fail] As an authenticated user i try to search post with invalid key fields
     When I load the fixture "searchPost" in "post" folder
     And I am connected with email "user1@contact.fr"
     And I send a "GET" request to "/api/posts?fields[pos]=id,title"
     Then the response should be in JSON
     And the response status code should be 400
     And the JSON node "errors.message" should be equal to "Not found index post"
+
+  Scenario:[Fail] As an authenticated user i try to search post with invalid param page
+    When I load the fixture "searchPost" in "post" folder
+    And I am connected with email "user1@contact.fr"
+    And I send a "GET" request to "/api/posts?fields[pos]=id,title&page=3"
+    Then the response should be in JSON
+    And the response status code should be 404
+    And the JSON node "errors.message" should be equal to "Not found page 3"
 
   Scenario:[Success] As an authenticated user i try to search post with id and title
     When I load the fixture "searchPost" in "post" folder

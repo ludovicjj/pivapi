@@ -5,6 +5,7 @@ namespace App\Domain\Core;
 
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class OutputSearchResult
@@ -68,7 +69,15 @@ class OutputSearchResult
     public function getNbPages(): int
     {
         $nbItems = $this->getNbItems() ?: 1;
-        return (int) ceil($nbItems / $this->limit);
+        $nbPages =  (int) ceil($nbItems / $this->limit);
+
+        if ($this->page > $nbPages) {
+            throw new NotFoundHttpException(
+                sprintf('Not found page %d', $this->page)
+            );
+        }
+
+        return $nbPages;
     }
 
 
