@@ -12,6 +12,7 @@ use App\Domain\Search\PostSearch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class SearchPost
@@ -25,14 +26,19 @@ class SearchPost
     /** @var SerializerInterface $serializer */
     private $serializer;
 
+    /** @var UrlGeneratorInterface $urlGenerator */
+    private $urlGenerator;
+
     public function __construct(
         PostRepository $postRepository,
         ParameterBagTransformer $parameterBagTransformer,
-        SerializerInterface $serializer
+        SerializerInterface $serializer,
+        UrlGeneratorInterface $urlGenerator
     ) {
         $this->postRepository = $postRepository;
         $this->parameterBagTransformer = $parameterBagTransformer;
         $this->serializer = $serializer;
+        $this->urlGenerator = $urlGenerator;
     }
 
     /**
@@ -52,7 +58,16 @@ class SearchPost
             )
         );
 
-        $output = new OutputSearchResult(iterator_to_array($paginator));
+        $output = new OutputSearchResult(
+            iterator_to_array($paginator),
+            $request->get('items', 5),
+            $paginator->count(),
+            $request->query->get('page', 1),
+            $request,
+            $this->urlGenerator
+        );
+
+
         $context = $this->parameterBagTransformer->transformQueryToContext($request->query);
 
         return new Response(

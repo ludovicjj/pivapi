@@ -63,7 +63,11 @@ class PostRepository extends AbstractRepository
             ->getOneOrNullResult();
     }
 
-    public function search(PostSearch $postSearch)
+    /**
+     * @param PostSearch $postSearch
+     * @return Paginator
+     */
+    public function search(PostSearch $postSearch): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('post');
 
