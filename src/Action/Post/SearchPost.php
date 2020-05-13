@@ -15,7 +15,6 @@ use App\Domain\Search\PostSearch;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class SearchPost
@@ -29,26 +28,22 @@ class SearchPost
     /** @var SerializerInterface $serializer */
     private $serializer;
 
-    /** @var UrlGeneratorInterface $urlGenerator */
-    private $urlGenerator;
-
     /** @var SearchPostRequestHandler $requestHandler */
     private $requestHandler;
 
+    /** @var LinkBuilder $linkBuilder */
     private $linkBuilder;
 
     public function __construct(
         PostRepository $postRepository,
         ParameterBagTransformer $parameterBagTransformer,
         SerializerInterface $serializer,
-        UrlGeneratorInterface $urlGenerator,
         SearchPostRequestHandler $requestHandler,
         LinkBuilder $linkBuilder
     ) {
         $this->postRepository = $postRepository;
         $this->parameterBagTransformer = $parameterBagTransformer;
         $this->serializer = $serializer;
-        $this->urlGenerator = $urlGenerator;
         $this->requestHandler = $requestHandler;
         $this->linkBuilder = $linkBuilder;
     }
