@@ -65,7 +65,7 @@ class PostNormalizer implements ContextAwareNormalizerInterface
     {
         if (!isset($context['query']['fields'][self::OBJECT_TYPE])) {
             throw new NormalizerException(
-                sprintf('Not found index %s', self::OBJECT_TYPE),
+                sprintf('Missing index %s in array fields', self::OBJECT_TYPE),
                 400
             );
         }

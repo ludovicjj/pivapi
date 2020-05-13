@@ -3,6 +3,7 @@
 
 namespace App\Action\Post;
 
+use App\Domain\Core\LinkBuilder;
 use App\Domain\Core\OrderTransformer;
 use App\Domain\Core\OutputSearchResult;
 use App\Domain\Core\ParameterBagTransformer;
@@ -31,20 +32,25 @@ class SearchPost
     /** @var UrlGeneratorInterface $urlGenerator */
     private $urlGenerator;
 
+    /** @var SearchPostRequestHandler $requestHandler */
     private $requestHandler;
+
+    private $linkBuilder;
 
     public function __construct(
         PostRepository $postRepository,
         ParameterBagTransformer $parameterBagTransformer,
         SerializerInterface $serializer,
         UrlGeneratorInterface $urlGenerator,
-        SearchPostRequestHandler $requestHandler
+        SearchPostRequestHandler $requestHandler,
+        LinkBuilder $linkBuilder
     ) {
         $this->postRepository = $postRepository;
         $this->parameterBagTransformer = $parameterBagTransformer;
         $this->serializer = $serializer;
         $this->urlGenerator = $urlGenerator;
         $this->requestHandler = $requestHandler;
+        $this->linkBuilder = $linkBuilder;
     }
 
     /**
@@ -70,18 +76,14 @@ class SearchPost
             )
         );
 
-        /**
-         * A faire le 13/05/2020
-         * Prevoir une classe type PaginationFactory ou LinkFactory
-         * qui créera les liens de sortie
-         * qui donnera le nbPages
-         * vérifira que la page demander existe -> throw exception
-         * et hydrater OutputSearchResult pour degager la logic qui n'a pas vraiment sa place dans cette classe
-         */
-        $output = new OutputSearchResult(
-            iterator_to_array($paginator), $items, $paginator->count(), $page, $request, $this->urlGenerator
-        );
+        $this->linkBuilder->build($items, $paginator->count(), $page);
 
+        $output = new OutputSearchResult(
+            iterator_to_array($paginator),
+            $this->linkBuilder->getNbItems(),
+            $this->linkBuilder->getNbPages(),
+            $this->linkBuilder->getLinks()
+        );
 
         $context = $this->parameterBagTransformer->transformQueryToContext($request->query);
 

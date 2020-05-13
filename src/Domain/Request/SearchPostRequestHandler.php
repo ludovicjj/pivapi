@@ -27,7 +27,7 @@ class SearchPostRequestHandler
 
         if ((int)$items < 1) {
             throw new InvalidArgumentException(
-                sprintf('Query parameter items must be int and greater than 0, given %s', $items),
+                sprintf('Expected query parameter items must be int and greater than 0, %s given', $items),
                 400
             );
         }
