@@ -75,7 +75,13 @@ class PostRepository extends AbstractRepository
         //Orders
         /** @var OrderSearch $orderSearch */
         foreach ($postSearch->getOrders() as $orderSearch) {
-           $queryBuilder->addOrderBy("post.{$orderSearch->getOrder()}", $orderSearch->getDirection());
+            if($orderSearch->getOrder() === PostSearch::ORDER_BY_USER) {
+                $queryBuilder
+                    ->innerJoin('post.user', 'user')
+                    ->addOrderBy("{$orderSearch->getOrder()}.id", $orderSearch->getDirection());
+            } else {
+                $queryBuilder->addOrderBy("post.{$orderSearch->getOrder()}", $orderSearch->getDirection());
+            }
         }
 
         $queryBuilder->addOrderBy('post.id', 'asc');

@@ -1,0 +1,6 @@
+App\Domain\Entity\Post:
+  post_template (template):
+    title: "un titre pour les tests"
+    abstract: "un extrait pour les tests"
+    content: "le contenu de l'article pour les tests"
+    createdAt: "<(new DateTime('2020-05-07 09:00:00'))>"
