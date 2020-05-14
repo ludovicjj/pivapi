@@ -4,10 +4,7 @@ namespace App\Domain\DataFixtures;
 
 use App\Domain\Core\Fixtures\Loader\Loader;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
-use Fidry\AliceDataFixtures\Bridge\Doctrine\Persister\ObjectManagerPersister;
-use Fidry\AliceDataFixtures\Loader\PersisterLoader;
-use Psr\Log\NullLogger;
+use Doctrine\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
@@ -15,20 +12,20 @@ class AppFixtures extends Fixture
     private $loader;
 
     public function __construct(
-      Loader $loader
+        Loader $loader
     ) {
         $this->loader = $loader;
     }
 
     public function load(ObjectManager $manager): void
     {
-        $persister = new PersisterLoader(
-            $this->loader,
-            new ObjectManagerPersister($manager),
-            new NullLogger(),
-            []
-        );
+        $fixtures = $this->loader->load([__DIR__ . '/appFixture.yaml']);
 
-        $persister->load([__DIR__ . '/appFixture.yaml']);
+        foreach ($fixtures as $fixture)
+        {
+            $manager->persist($fixture);
+        }
+
+        $manager->flush();
     }
 }
