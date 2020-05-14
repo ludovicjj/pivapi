@@ -1,0 +1,22 @@
+App\Domain\Entity\User:
+  user_alice:
+    __construct: ["user-id", "username", "123456", "firstName", "lastName", "email@contact.fr"]
+    id: <uniqid()>
+    username: "alice"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: <firstName()>
+    lastname: "doe"
+    email: "alice@contact.fr"
+    roles: [ROLE_ADMIN]
+    createdAt: "<(new DateTime('2020/01/01 08:00:00'))>"
+
+  user_bob:
+    __construct: ["user-id", "username", "123456", "firstName", "lastName", "email@contact.fr"]
+    id: <uniqid()>
+    username: "bob"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: <firstName()>
+    lastname: "doe"
+    email: "bob@contact.fr"
+    roles: [ROLE_USER]
+    createdAt: "<(new DateTime('2020/01/01 08:00:00'))>"

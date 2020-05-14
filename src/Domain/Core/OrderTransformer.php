@@ -10,11 +10,11 @@ use App\Domain\Search\OrderSearch;
 class OrderTransformer
 {
     /**
-     * Transform query param order to array with direction
+     * Transform query param order to array include direction
      *
      * @param string|null $stringOrder
      * @return array|OrderSearch[]
-     *@throws UnknownDirectionException
+     * @throws UnknownDirectionException
      *
      */
     public static function transformToArray(?string $stringOrder): array

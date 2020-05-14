@@ -9,6 +9,7 @@ use App\Domain\Core\OutputSearchResult;
 use App\Domain\Core\ParameterBagTransformer;
 use App\Domain\Exceptions\InvalidArgumentException;
 use App\Domain\Exceptions\UnknownDirectionException;
+use App\Domain\Exceptions\UnknownOrderException;
 use App\Domain\Repository\PostRepository;
 use App\Domain\Request\SearchPostRequestHandler;
 use App\Domain\Search\PostSearch;
@@ -53,6 +54,7 @@ class SearchPost
      * @param Request $request
      * @throws UnknownDirectionException
      * @throws InvalidArgumentException
+     * @throws UnknownOrderException
      * @return Response
      */
     public function search(Request $request)

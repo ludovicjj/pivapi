@@ -1,0 +1,3 @@
+include:
+  - fixtures/user.yaml
+  - fixtures/post.yaml

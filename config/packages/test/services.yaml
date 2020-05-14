@@ -1,0 +1,5 @@
+services:
+    # loader
+    alice.fixtures.loader:
+        class: App\Domain\Core\Fixtures\Loader\Loader
+        public: true

@@ -1,0 +1,39 @@
+include:
+  - ../templates/user.yaml
+  - ../templates/post.yaml
+
+App\Domain\Entity\User:
+  user1 (extends user_template):
+    id: "user1"
+    username: "john-doe"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: "john"
+    lastname: "doe"
+    email: "user1@contact.fr"
+    roles: [ROLE_USER]
+
+  user2 (extends user_template):
+    id: "user2"
+    username: "john-wick"
+    password: "\\$2y\\$10\\$RpNmZjWR3xmzfUEoyfsbFOoZk5qm2ihuzY8jsjghiwq/GutkmFk9a"
+    firstname: "john"
+    lastname: "wick"
+    email: "user2@contact.fr"
+    roles: [ROLE_USER]
+
+App\Domain\Entity\Post:
+  post1 (extends post_template):
+    __construct: ["post1", "mon titre", "mon extrait", "mon contenu", "@user2"]
+    title: "Mon super titre"
+    createdAt: "<(new DateTime('2020-05-07 09:00:00'))>"
+    updatedAt: "<(new DateTime('2020-05-07 11:00:00'))>"
+  post2 (extends post_template):
+    __construct: ["post2", "un autre titre", "mon extrait", "mon contenu", "@user2"]
+    title: "hello world"
+    createdAt: "<(new DateTime('2020-05-07 09:10:00'))>"
+    updatedAt: "<(new DateTime('2020-05-07 10:35:00'))>"
+  post3 (extends post_template):
+    __construct: ["post3", "un autre titre", "mon extrait", "mon contenu", "@user1"]
+    title: "un autre titre"
+    createdAt: "<(new DateTime('2020-05-07 09:05:00'))>"
+    updatedAt: "<(new DateTime('2020-05-07 10:55:00'))>"
