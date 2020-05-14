@@ -14,7 +14,7 @@ class OrderTransformer
      *
      * @param string|null $stringOrder
      * @return array|OrderSearch[]
-     *@throws UnknownDirectionException
+     * @throws UnknownDirectionException
      *
      */
     public static function transformToArray(?string $stringOrder): array
