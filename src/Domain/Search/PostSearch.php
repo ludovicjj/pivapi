@@ -13,6 +13,7 @@ class PostSearch
     const ORDER_BY_USER = 'user';
     const ORDER_BY_TITLE = 'title';
 
+    /** @var array $allowedOrders */
     private static $allowedOrders = [
         self::ORDER_BY_CREATED_AT,
         self::ORDER_BY_UPDATED_AT,
@@ -80,7 +81,7 @@ class PostSearch
      * @param array $orders
      * @throws UnknownOrderException
      */
-    private function isValidOrders(array $orders)
+    private function isValidOrders(array $orders): void
     {
         /** @var OrderSearch $order */
         foreach ($orders as $order) {
