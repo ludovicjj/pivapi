@@ -5,6 +5,7 @@ namespace App\Domain\Repository;
 
 
 use App\Domain\Entity\Post;
+use App\Domain\Search\OrderSearch;
 use App\Domain\Search\PostSearch;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -70,6 +71,12 @@ class PostRepository extends AbstractRepository
     public function search(PostSearch $postSearch): Paginator
     {
         $queryBuilder = $this->createQueryBuilder('post');
+
+        //Orders
+        /** @var OrderSearch $orderSearch */
+        foreach ($postSearch->getOrders() as $orderSearch) {
+           $queryBuilder->addOrderBy("post.{$orderSearch->getOrder()}", $orderSearch->getDirection());
+        }
 
         $queryBuilder->addOrderBy('post.id', 'asc');
 
