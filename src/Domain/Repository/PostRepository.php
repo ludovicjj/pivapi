@@ -80,7 +80,7 @@ class PostRepository extends AbstractRepository
                     ->innerJoin('post.user', 'user')
                     ->addOrderBy("{$orderSearch->getOrder()}.id", $orderSearch->getDirection());
             } else {
-                $queryBuilder->addOrderBy("post.{$orderSearch->getOrder()}", $orderSearch->getDirection());
+                $queryBuilder->addOrderBy("LOWER(post.{$orderSearch->getOrder()})", $orderSearch->getDirection());
             }
         }
 
