@@ -13,6 +13,11 @@ use Nelmio\Alice\Loader\NativeLoader;
 
 class Loader extends NativeLoader implements LoaderInterface
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     /**
      * You can set the default locale to use by configuring the locale value used by Faker generator.
      * With NativeLoader, this can be done by overriding the createFakerGenerator() method.
