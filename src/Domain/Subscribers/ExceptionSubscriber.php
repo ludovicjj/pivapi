@@ -7,6 +7,7 @@ use App\Domain\Exceptions\InvalidArgumentException;
 use App\Domain\Exceptions\JWTException;
 use App\Domain\Exceptions\NormalizerException;
 use App\Domain\Exceptions\PostNotFoundException;
+use App\Domain\Exceptions\UnknownOrderException;
 use App\Domain\Exceptions\ValidatorException;
 use App\Responder\ErrorResponder;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -44,6 +45,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 break;
             case NormalizerException::class:
             case InvalidArgumentException::class:
+            case UnknownOrderException::class:
                 $this->processHttpException($event);
         }
     }
