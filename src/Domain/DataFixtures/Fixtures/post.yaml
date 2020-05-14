@@ -1,0 +1,24 @@
+App\Domain\Entity\Post:
+  post1:
+    __construct: ["post1", "mon titre", "mon extrait", "mon contenu", "@user_bob"]
+    id: <uniqid()>
+    title: "Hello world"
+    abstract: "Un court extrait"
+    content: "Le contenu de l'article hello world"
+    createdAt: "<(new DateTime('2020/01/01 09:00:00'))>"
+
+  post2:
+    __construct: ["post2", "un autre titre", "mon extrait", "mon contenu", "@user_alice"]
+    id: <uniqid()>
+    title: "Un autre post"
+    abstract: "Un autre extrait"
+    content: "Mon super contenu"
+    createdAt: "<(new DateTime('2020/01/01 09:10:00'))>"
+
+  post3:
+    __construct: ["post3", "un autre titre", "mon extrait", "mon contenu", "@user_alice"]
+    id: <uniqid()>
+    title: "Le post repository"
+    abstract: "tester le post repository"
+    content: "Aujourd'hui il faut tester les order by pour pour la fonctionnalité search post"
+    createdAt: "<(new DateTime('2020/01/01 09:30:00'))>"
