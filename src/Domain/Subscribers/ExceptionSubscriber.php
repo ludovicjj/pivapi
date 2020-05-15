@@ -47,6 +47,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
             case InvalidArgumentException::class:
             case UnknownOrderException::class:
                 $this->processHttpException($event);
+                break;
         }
     }
 
