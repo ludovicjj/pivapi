@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class LinkBuilder
+class PaginatorBuilder
 {
     /** @var UrlGeneratorInterface $urlGenerator */
     private $urlGenerator;
@@ -39,10 +39,10 @@ class LinkBuilder
 
     /**
      * @param int $nbItems
+     * @return PaginatorBuilder
      * @throws NotFoundHttpException
-     * @return LinkBuilder
      */
-    public function build(int $nbItems): LinkBuilder
+    public function build(int $nbItems): PaginatorBuilder
     {
         $this->perPage = $this->requestStack->getCurrentRequest()->query->get('items');
         $this->nbItems = $nbItems;
