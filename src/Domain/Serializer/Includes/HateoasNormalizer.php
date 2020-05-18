@@ -39,7 +39,7 @@ class HateoasNormalizer
 
     /**
      * @param AbstractEntity $object
-     * @param $format
+     * @param null $format
      * @param array $context
      * @param array $allowedIncludes
      * @return array
@@ -57,7 +57,7 @@ class HateoasNormalizer
 
     /**
      * @param AbstractEntity $object
-     * @param $format
+     * @param null $format
      * @param array $context
      * @param array $allowedLinks
      * @return array
