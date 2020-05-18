@@ -60,3 +60,8 @@ services:
         arguments:
             - '@serializer'
         lazy: true
+
+    App\Domain\Serializer\Includes\HateoasNormalizer:
+        arguments:
+            - '@serializer'
+        lazy: true
