@@ -4,14 +4,14 @@
 namespace App\Domain\Serializer;
 
 
-use App\Domain\Entity\AbstractEntity;
+use App\Domain\Builder\LinkBuilder;
 use App\Domain\Entity\Post;
 use App\Domain\Exceptions\NormalizerException;
 use App\Domain\Serializer\Includes\IncludesNormalizer;
+use App\Domain\Serializer\Includes\HateoasNormalizer;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use ArrayObject;
 
 class PostNormalizer implements ContextAwareNormalizerInterface
 {
@@ -20,6 +20,9 @@ class PostNormalizer implements ContextAwareNormalizerInterface
 
     /** @var IncludesNormalizer $includesNormalizer */
     private $includesNormalizer;
+
+    /** @var HateoasNormalizer $hateoasNormalizer */
+    private $hateoasNormalizer;
 
     const OBJECT_TYPE = 'post';
 
@@ -33,12 +36,37 @@ class PostNormalizer implements ContextAwareNormalizerInterface
         'user',
     ];
 
+    const ALLOWED_LINK = [
+        [
+            'route' => 'api_create_post',
+            'type' => LinkBuilder::NEW,
+            'parameters' => []
+        ],
+        [
+            'route' => 'api_search_post',
+            'type' => LinkBuilder::LIST,
+            'parameters' => ['request' => 'query']
+        ],
+        [
+            'route' => 'api_update_post',
+            'type' => LinkBuilder::UPDATE,
+            'parameters' => ['postId' => 'id']
+        ],
+        [
+            'route' => 'api_delete_post',
+            'type' => LinkBuilder::DELETE,
+            'parameters' => ['postId' => 'id']
+        ],
+    ];
+
     public function __construct(
         ObjectNormalizer $objectNormalizer,
-        IncludesNormalizer $includesNormalizer
+        IncludesNormalizer $includesNormalizer,
+        HateoasNormalizer $hateoasNormalizer
     ) {
         $this->objectNormalizer = $objectNormalizer;
         $this->includesNormalizer = $includesNormalizer;
+        $this->hateoasNormalizer = $hateoasNormalizer;
     }
 
     /**
@@ -84,7 +112,15 @@ class PostNormalizer implements ContextAwareNormalizerInterface
             self::ALLOWED_INCLUDES
         );
 
-        return array_merge($postNormalized, $includeNormalized);
+        /** @var array $hateoasLinks */
+        $hateoasLinks = $this->hateoasNormalizer->normalizeIncludes(
+            $post,
+            $format,
+            $context,
+            self::ALLOWED_LINK
+        );
+
+        return array_merge($postNormalized, $includeNormalized, $hateoasLinks);
     }
 
     /**
