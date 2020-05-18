@@ -9,19 +9,19 @@ class OutputSearchResult
     /** @var array $items */
     private $items;
 
-    /** @var Pagination $links*/
-    private $links;
+    /** @var Pagination $pagination */
+    private $pagination;
 
     /**
      * @param array $items
-     * @param Pagination $links
+     * @param Pagination $pagination
      */
     public function __construct(
         array $items,
-        Pagination $links
+        Pagination $pagination
     ) {
         $this->items = $items;
-        $this->links = $links;
+        $this->pagination = $pagination;
     }
 
     public function getItems(): array
@@ -31,16 +31,16 @@ class OutputSearchResult
 
     public function getNbItems(): int
     {
-        return $this->links->getNbItems();
+        return $this->pagination->getNbItems();
     }
 
     public function getNbPages(): int
     {
-        return $this->links->getNbPages();
+        return $this->pagination->getNbPages();
     }
 
     public function getLinks(): array
     {
-        return $this->links->getLinks();
+        return $this->pagination->getLinks();
     }
 }
