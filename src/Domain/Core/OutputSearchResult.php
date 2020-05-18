@@ -9,16 +9,16 @@ class OutputSearchResult
     /** @var array $items */
     private $items;
 
-    /** @var LinkPaginator $links*/
+    /** @var Pagination $links*/
     private $links;
 
     /**
      * @param array $items
-     * @param LinkPaginator $links
+     * @param Pagination $links
      */
     public function __construct(
         array $items,
-        LinkPaginator $links
+        Pagination $links
     ) {
         $this->items = $items;
         $this->links = $links;

@@ -4,7 +4,7 @@
 namespace App\Action\Post;
 
 
-use App\Domain\Builder\PaginatorBuilder;
+use App\Domain\Builder\PaginationBuilder;
 use App\Domain\Core\OutputSearchResult;
 use App\Domain\Core\ParameterBagTransformer;
 use App\Domain\Exceptions\UnknownQueryException;
@@ -28,17 +28,17 @@ class SearchPost
     /** @var SerializerInterface $serializer */
     private $serializer;
 
-    /** @var PaginatorBuilder $paginatorBuilder */
-    private $paginatorBuilder;
+    /** @var PaginationBuilder $paginationBuilder */
+    private $paginationBuilder;
 
     public function __construct(
         RequestLoader $requestLoader,
-        PaginatorBuilder $paginatorBuilder,
+        PaginationBuilder $paginationBuilder,
         ParameterBagTransformer $parameterBagTransformer,
         SerializerInterface $serializer
     ) {
         $this->requestLoader = $requestLoader;
-        $this->paginatorBuilder = $paginatorBuilder;
+        $this->paginationBuilder = $paginationBuilder;
         $this->parameterBagTransformer = $parameterBagTransformer;
         $this->serializer = $serializer;
     }
@@ -56,9 +56,9 @@ class SearchPost
         /** @var Paginator $paginatedPosts */
         $paginatedPosts = $this->requestLoader->load($request);
 
-        $linkPaginator = $this->paginatorBuilder->build($paginatedPosts->count())->getLink();
+        $pagination = $this->paginationBuilder->build($paginatedPosts->count())->getPagination();
 
-        $output = new OutputSearchResult(iterator_to_array($paginatedPosts), $linkPaginator);
+        $output = new OutputSearchResult(iterator_to_array($paginatedPosts), $pagination);
         $context = $this->parameterBagTransformer->transformQueryToContext($request->query);
 
         return new Response(

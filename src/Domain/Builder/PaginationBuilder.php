@@ -4,12 +4,12 @@
 namespace App\Domain\Builder;
 
 
-use App\Domain\Core\LinkPaginator;
+use App\Domain\Core\Pagination;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class PaginatorBuilder
+class PaginationBuilder
 {
     /** @var UrlGeneratorInterface $urlGenerator */
     private $urlGenerator;
@@ -39,10 +39,10 @@ class PaginatorBuilder
 
     /**
      * @param int $nbItems
-     * @return PaginatorBuilder
+     * @return PaginationBuilder
      * @throws NotFoundHttpException
      */
-    public function build(int $nbItems): PaginatorBuilder
+    public function build(int $nbItems): PaginationBuilder
     {
         $this->perPage = $this->requestStack->getCurrentRequest()->query->get('items');
         $this->nbItems = $nbItems;
@@ -58,11 +58,11 @@ class PaginatorBuilder
     }
 
     /**
-     * @return LinkPaginator
+     * @return Pagination
      */
-    public function getLink(): LinkPaginator
+    public function getPagination(): Pagination
     {
-        return new LinkPaginator(
+        return new Pagination(
             $this->getLinks(),
             $this->getNbItems(),
             $this->getNbPages()

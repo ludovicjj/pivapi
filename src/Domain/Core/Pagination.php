@@ -4,7 +4,7 @@
 namespace App\Domain\Core;
 
 
-class LinkPaginator
+class Pagination
 {
     /** @var array $links */
     private $links;
