@@ -1,14 +1,15 @@
 <?php
 
 
-namespace App\Domain\Core;
+namespace App\Domain\Builder;
 
 
+use App\Domain\Core\Pagination;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class LinkBuilder
+class PaginationBuilder
 {
     /** @var UrlGeneratorInterface $urlGenerator */
     private $urlGenerator;
@@ -37,16 +38,15 @@ class LinkBuilder
     }
 
     /**
-     * @param int $perPage
      * @param int $nbItems
-     * @param int $page
+     * @return PaginationBuilder
      * @throws NotFoundHttpException
      */
-    public function build(int $perPage, int $nbItems, int $page): void
+    public function build(int $nbItems): PaginationBuilder
     {
-        $this->perPage = $perPage;
+        $this->perPage = $this->requestStack->getCurrentRequest()->query->get('items');
         $this->nbItems = $nbItems;
-        $this->page = $page;
+        $this->page = $this->requestStack->getCurrentRequest()->query->get('page');
 
         if ($this->page > $this->getNbPages()) {
             throw new NotFoundHttpException(
@@ -54,9 +54,22 @@ class LinkBuilder
             );
         }
 
+        return $this;
     }
 
-    public function getLinks(): array
+    /**
+     * @return Pagination
+     */
+    public function getPagination(): Pagination
+    {
+        return new Pagination(
+            $this->getLinks(),
+            $this->getNbItems(),
+            $this->getNbPages()
+        );
+    }
+
+    private function getLinks(): array
     {
         if ($this->hasPreviousPage()) {
             $this->createLink('previous', $this->getUrl((string)($this->page - 1)));
@@ -71,13 +84,13 @@ class LinkBuilder
         return $this->links;
     }
 
-    public function getNbPages(): int
+    private function getNbPages(): int
     {
         $nbItems = $this->nbItems ?: 1;
         return (int) ceil($nbItems / $this->perPage);
     }
 
-    public function getNbItems(): int
+    private function getNbItems(): int
     {
         return $this->nbItems;
     }

@@ -9,32 +9,19 @@ class OutputSearchResult
     /** @var array $items */
     private $items;
 
-    /** @var int $nbItems */
-    private $nbItems;
-
-    /** @var int $nbPages */
-    private $nbPages;
-
-    /** @var array $links*/
-    private $links = [];
+    /** @var Pagination $pagination */
+    private $pagination;
 
     /**
-     * PaginatorResult constructor.
      * @param array $items
-     * @param int $nbItems
-     * @param int $nbPages
-     * @param array $links
+     * @param Pagination $pagination
      */
     public function __construct(
         array $items,
-        int $nbItems,
-        int $nbPages,
-        array $links
+        Pagination $pagination
     ) {
         $this->items = $items;
-        $this->nbItems = $nbItems;
-        $this->nbPages = $nbPages;
-        $this->links = $links;
+        $this->pagination = $pagination;
     }
 
     public function getItems(): array
@@ -42,18 +29,18 @@ class OutputSearchResult
         return $this->items;
     }
 
-    public function getNbItems(): ?int
+    public function getNbItems(): int
     {
-        return $this->nbItems;
+        return $this->pagination->getNbItems();
     }
 
     public function getNbPages(): int
     {
-        return $this->nbPages;
+        return $this->pagination->getNbPages();
     }
 
     public function getLinks(): array
     {
-        return $this->links;
+        return $this->pagination->getLinks();
     }
 }

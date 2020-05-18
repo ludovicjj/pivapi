@@ -3,7 +3,7 @@
 
 namespace App\Domain\Subscribers;
 
-use App\Domain\Exceptions\InvalidArgumentException;
+use App\Domain\Exceptions\UnknownQueryException;
 use App\Domain\Exceptions\JWTException;
 use App\Domain\Exceptions\NormalizerException;
 use App\Domain\Exceptions\PostNotFoundException;
@@ -44,9 +44,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 $this->processNotFoundException($event);
                 break;
             case NormalizerException::class:
-            case InvalidArgumentException::class:
+            case UnknownQueryException::class:
             case UnknownOrderException::class:
                 $this->processHttpException($event);
+                break;
         }
     }
 
@@ -102,7 +103,7 @@ class ExceptionSubscriber implements EventSubscriberInterface
 
     private function processHttpException(ExceptionEvent $event): void
     {
-        /** @var NormalizerException|InvalidArgumentException $exception */
+        /** @var NormalizerException|UnknownQueryException $exception */
         $exception = $event->getThrowable();
 
         $event->setResponse(
