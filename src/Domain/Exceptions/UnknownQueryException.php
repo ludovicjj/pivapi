@@ -4,7 +4,7 @@
 namespace App\Domain\Exceptions;
 
 
-class InvalidArgumentException extends \Exception
+class UnknownQueryException extends \Exception
 {
 
 }

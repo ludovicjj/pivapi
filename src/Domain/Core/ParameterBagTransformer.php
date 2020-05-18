@@ -4,15 +4,15 @@
 namespace App\Domain\Core;
 
 
-use App\Domain\Exceptions\InvalidArgumentException;
+use App\Domain\Exceptions\UnknownQueryException;
 use Symfony\Component\HttpFoundation\ParameterBag;
 
 class ParameterBagTransformer
 {
     /**
      * @param ParameterBag $parameterBag
-     * @throws InvalidArgumentException
      * @return array
+     * @throws UnknownQueryException
      */
     public function transformQueryToContext(ParameterBag $parameterBag): array
     {
@@ -26,8 +26,8 @@ class ParameterBagTransformer
 
     /**
      * @param ParameterBag $parameterBag
-     * @throws InvalidArgumentException
      * @return array
+     * @throws UnknownQueryException
      */
     private function getFields(ParameterBag $parameterBag): array
     {
@@ -36,7 +36,7 @@ class ParameterBagTransformer
         }
 
         if (!is_array($parameterBag->get('fields'))) {
-            throw new InvalidArgumentException(
+            throw new UnknownQueryException(
                 sprintf(
                     'Expected query parameter fields must be an array, %s given',
                     gettype($parameterBag->get('fields'))
