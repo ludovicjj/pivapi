@@ -51,6 +51,8 @@ class UserNormalizer implements ContextAwareNormalizerInterface
      */
     public function normalize($user, $format = null, array $context = [])
     {
+        $context['query']['fields'][self::OBJECT_TYPE][] = 'id';
+
         $objectNormalizerContext = ['attributes' => []];
         $allowAttributes = $context['query']['fields'][self::OBJECT_TYPE];
         $objectNormalizerContext['attributes'] = $this->filterPublicAttributes($allowAttributes);
