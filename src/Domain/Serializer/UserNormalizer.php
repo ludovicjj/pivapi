@@ -3,6 +3,7 @@
 namespace App\Domain\Serializer;
 
 use App\Domain\Entity\User;
+use App\Domain\Exceptions\NormalizerException;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
@@ -64,7 +65,17 @@ class UserNormalizer implements ContextAwareNormalizerInterface
     private function filterPublicAttributes($attributes): array
     {
         return array_filter(array_unique($attributes), function($attribute){
-            return in_array($attribute, self::ALLOWED_PUBLIC_ATTRIBUTES);
+            if (!in_array($attribute, self::ALLOWED_PUBLIC_ATTRIBUTES)) {
+                throw new NormalizerException(
+                    sprintf(
+                        'Invalid user attributes. Allowed attributes are : %s',
+                        implode(', ', self::ALLOWED_PUBLIC_ATTRIBUTES)
+                    ),
+                    400
+                );
+            } else {
+                return true;
+            }
         });
     }
 }

@@ -130,7 +130,17 @@ class PostNormalizer implements ContextAwareNormalizerInterface
     private function filterAllowAttributes($attributes): array
     {
         return array_filter(array_unique($attributes), function($attribute){
-            return in_array($attribute, self::ALLOWED_ATTRIBUTES);
+            if (!in_array($attribute, self::ALLOWED_ATTRIBUTES)) {
+                throw new NormalizerException(
+                    sprintf(
+                        'Invalid post attributes. Allowed attributes are : %s',
+                        implode(', ', self::ALLOWED_ATTRIBUTES)
+                    ),
+                    400
+                );
+            } else {
+                return true;
+            }
         });
     }
 }
