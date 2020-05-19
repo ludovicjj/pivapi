@@ -21,6 +21,7 @@ class ReadPost
     /** @var SerializerInterface $serializer */
     private $serializer;
 
+    /** @var ParameterBagTransformer $parameterBadTransformer */
     private $parameterBadTransformer;
 
     public function __construct(
