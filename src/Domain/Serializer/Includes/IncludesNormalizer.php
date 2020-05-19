@@ -86,7 +86,7 @@ class IncludesNormalizer
      * @param string $include
      * @return AbstractEntity
      */
-    private function getSubObject(AbstractEntity$object, string $include): AbstractEntity
+    private function getSubObject(AbstractEntity $object, string $include): AbstractEntity
     {
         return $this->propertyAccessor->getValue($object, $include);
     }
