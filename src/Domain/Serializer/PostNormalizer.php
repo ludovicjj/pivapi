@@ -43,9 +43,9 @@ class PostNormalizer implements ContextAwareNormalizerInterface
             'parameters' => []
         ],
         [
-            'route' => 'api_search_post',
-            'type' => LinkBuilder::LIST,
-            'parameters' => ['request' => 'query']
+            'route' => 'api_read_post',
+            'type' => LinkBuilder::SHOW_ONE,
+            'parameters' => ['postId' => 'id', 'request' => 'query']
         ],
         [
             'route' => 'api_update_post',
@@ -56,6 +56,11 @@ class PostNormalizer implements ContextAwareNormalizerInterface
             'route' => 'api_delete_post',
             'type' => LinkBuilder::DELETE,
             'parameters' => ['postId' => 'id']
+        ],
+        [
+            'route' => 'api_search_post',
+            'type' => LinkBuilder::LIST,
+            'parameters' => ['request' => 'query']
         ],
     ];
 
