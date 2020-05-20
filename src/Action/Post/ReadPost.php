@@ -47,7 +47,7 @@ class ReadPost
         $context = $this->parameterBadTransformer->transformQueryToContext($request->query);
 
         return new Response(
-            $this->serializer->serialize($post, 'json', $context),
+            $this->serializer->serialize(['item' => $post], 'json', $context),
             200,
             ['Content-Type' => 'application/json']
         );
