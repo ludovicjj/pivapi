@@ -86,15 +86,17 @@ class HateoasNormalizer
             return [];
         }
 
-        $resultParams = [];
+        $requestAttributes = [];
+        $requestQuery = [];
 
-        array_walk($parameters, function($property, $key) use (&$resultParams, $object) {
+        array_walk($parameters, function($property, $key) use ($object, &$requestAttributes, &$requestQuery) {
+
             if ($key == 'request' && $property == 'query') {
-                $resultParams[] = $this->requestStack->getCurrentRequest()->query->all();
+                $requestQuery = $this->requestStack->getCurrentRequest()->query->all();
             } else {
-                $resultParams[$key] = $this->propertyAccessor->getValue($object, $property);
+                $requestAttributes[$key] = $this->propertyAccessor->getValue($object, $property);
             }
         });
-        return $resultParams;
+       return array_merge($requestAttributes, $requestQuery);
     }
 }

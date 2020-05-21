@@ -16,14 +16,6 @@ Feature: As an authenticated user i must search post
     And the response status code should be 400
     And the JSON node "errors.message" should be equal to "Expected query parameter fields must be an array, string given"
 
-  Scenario:[Fail] As an authenticated user i try to search post with invalid key into fields
-    When I load the fixture "searchPost" in "post" folder
-    And I am connected with email "user1@contact.fr"
-    And I send a "GET" request to "/api/posts?fields[pos]=id,title"
-    Then the response should be in JSON
-    And the response status code should be 400
-    And the JSON node "errors.message" should be equal to "Missing index post in array fields"
-
   Scenario:[Fail] As an authenticated user i try to search post with query params page less than 1
     When I load the fixture "searchPost" in "post" folder
     And I am connected with email "user1@contact.fr"
@@ -56,6 +48,18 @@ Feature: As an authenticated user i must search post
     And the response status code should be 400
     And the JSON node "errors.message" should be equal to "Expected query parameter items must be int and greater than 0, john given"
 
+  Scenario:[Success] As an authenticated user i try to search post with no query params
+    When I load the fixture "searchPost" in "post" folder
+    And I am connected with email "user1@contact.fr"
+    And I send a "GET" request to "/api/posts"
+    Then the response should be in JSON
+    And the response status code should be 200
+    And the JSON node "items" should exist
+    And the JSON node "items" should have 2 elements
+    And the JSON node "items[0]" should have 2 elements
+    And the JSON node "items[0].id" should exist
+    And the JSON node "items[0]._links" should exist
+
   Scenario:[Success] As an authenticated user i try to search post without post in database
     When I load the fixture "searchPostWithoutPost" in "post" folder
     And I am connected with email "user1@contact.fr"
@@ -63,6 +67,7 @@ Feature: As an authenticated user i must search post
     Then the response should be in JSON
     And the response status code should be 200
     And the JSON node "items" should exist
+    And the JSON node "items" should have 0 element
     And the JSON node "nbItems" should be equal to "0"
     And the JSON node "nbPages" should be equal to "1"
     And the JSON node "links.current" should be equal to "http://localhost/api/posts?fields%5Bpost%5D=id,title&items=1&page=1"
@@ -82,7 +87,7 @@ Feature: As an authenticated user i must search post
   Scenario:[Success] As an authenticated user i try to search post include user
     When I load the fixture "searchPost" in "post" folder
     And I am connected with email "user1@contact.fr"
-    And I send a "GET" request to "/api/posts?fields[post]=id,title&includes=user.id"
+    And I send a "GET" request to "/api/posts?fields[post]=id,title&includes=user"
     Then the response should be in JSON
     And the response status code should be 200
     And the JSON node "items" should have 2 elements

@@ -43,9 +43,9 @@ class PostNormalizer implements ContextAwareNormalizerInterface
             'parameters' => []
         ],
         [
-            'route' => 'api_search_post',
-            'type' => LinkBuilder::LIST,
-            'parameters' => ['request' => 'query']
+            'route' => 'api_read_post',
+            'type' => LinkBuilder::SHOW_ONE,
+            'parameters' => ['postId' => 'id', 'request' => 'query']
         ],
         [
             'route' => 'api_update_post',
@@ -56,6 +56,11 @@ class PostNormalizer implements ContextAwareNormalizerInterface
             'route' => 'api_delete_post',
             'type' => LinkBuilder::DELETE,
             'parameters' => ['postId' => 'id']
+        ],
+        [
+            'route' => 'api_search_post',
+            'type' => LinkBuilder::LIST,
+            'parameters' => ['request' => 'query']
         ],
     ];
 
@@ -87,19 +92,13 @@ class PostNormalizer implements ContextAwareNormalizerInterface
      * @param array $context
      * @return array
      * @throws ExceptionInterface
-     * @throws NormalizerException
      */
     public function normalize($post, $format = null, array $context = [])
     {
-        if (!isset($context['query']['fields'][self::OBJECT_TYPE])) {
-            throw new NormalizerException(
-                sprintf('Missing index %s in array fields', self::OBJECT_TYPE),
-                400
-            );
-        }
+        $context['query']['fields'][self::OBJECT_TYPE][] = 'id';
 
-        $allowAttributes = $context['query']['fields'][self::OBJECT_TYPE];
-        $objectNormalizerContext['attributes'] = $this->filterAllowAttributes($allowAttributes);
+        $allowedAttributes = $context['query']['fields'][self::OBJECT_TYPE];
+        $objectNormalizerContext['attributes'] = $this->filterAllowedAttributes($allowedAttributes);
 
         /** @var array $postNormalized */
         $postNormalized = $this->objectNormalizer->normalize($post, $format, $objectNormalizerContext);
@@ -127,10 +126,20 @@ class PostNormalizer implements ContextAwareNormalizerInterface
      * @param array $attributes
      * @return array
      */
-    private function filterAllowAttributes($attributes): array
+    private function filterAllowedAttributes($attributes): array
     {
         return array_filter(array_unique($attributes), function($attribute){
-            return in_array($attribute, self::ALLOWED_ATTRIBUTES);
+            if (!in_array($attribute, self::ALLOWED_ATTRIBUTES)) {
+                throw new NormalizerException(
+                    sprintf(
+                        'Invalid post attributes. Allowed attributes are : %s',
+                        implode(', ', self::ALLOWED_ATTRIBUTES)
+                    ),
+                    400
+                );
+            } else {
+                return true;
+            }
         });
     }
 }
